@@ -33,11 +33,16 @@ class Forecast extends StatelessWidget {
           LayoutBuilder(
             builder: (context, constraints) {
               if (constraints.maxWidth > 600) {
-                // Desktop/tablet: row layout
+                // Desktop/tablet: row layout with wider cards
                 return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: dailyForecast.asMap().entries.map((entry) {
-                    return Expanded(
-                      child: _buildForecastCard(entry.value, entry.key),
+                    return SizedBox(
+                      width: 180,  // Increased card width
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: _buildForecastCard(entry.value, entry.key),
+                      ),
                     );
                   }).toList(),
                 );
@@ -47,7 +52,10 @@ class Forecast extends StatelessWidget {
                   children: dailyForecast.asMap().entries.map((entry) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
-                      child: _buildForecastCard(entry.value, entry.key),
+                      child: SizedBox(
+                        width: 280,  // Wider cards on mobile
+                        child: _buildForecastCard(entry.value, entry.key),
+                      ),
                     );
                   }).toList(),
                 );
@@ -68,13 +76,13 @@ class Forecast extends StatelessWidget {
     final weatherMain = day['weather'][0]['main'];
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.2),
         borderRadius: BorderRadius.circular(16),
-       ),
+      ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             dayName,
@@ -119,6 +127,7 @@ class Forecast extends StatelessWidget {
               fontSize: 12,
               color: Colors.white,
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
